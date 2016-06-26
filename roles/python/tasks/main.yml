@@ -1,0 +1,21 @@
+---
+- name: Install python 2.7 packages
+  apt: >
+    pkg="{{ item }}"
+    state=latest
+    update_cache=yes
+  with_items:
+    - python2.7
+    - python2.7-dev
+    - python-virtualenv
+    - python-pip
+  when: ansible_distribution == 'Ubuntu' and python_version == '2.7'
+
+- name: Install python3 packages
+  apt: >
+    pkg="{{ item }}"
+    state=latest
+    update_cache=yes
+  with_items:
+    - python-virtualenv
+  when: ansible_distribution == 'Ubuntu' and python_version == '3.4'

@@ -1,0 +1,9 @@
+- name: install application config
+  template: >
+    src={% if template_source is defined %}{{ template_source}}{% else %}{{ template_root }}{{ pyapp_dest_dir }}/{{ pyapp_app_name }}{% endif %}/paste_boy/settings.py.j2
+    dest={{ pyapp_dest_dir }}/{{ pyapp_app_name }}/paste_boy/settings{{ config_suffix|default('') }}.py
+    owner={{ www_owner|default('www-data') }}
+    group={{ www_group|default('www-data') }}
+
+- name: run migration
+  shell: "{{ pyapp_dest_dir }}/{{ pyapp_app_name }}/venv/bin/python {{ pyapp_dest_dir }}/{{pyapp_app_name}}/manage.py migrate"

@@ -1,0 +1,7 @@
+[pboy]
+107.170.79.245
+
+[pboy:vars]
+ansible_ssh_host=107.170.79.245
+ansible_ssh_port=22
+ansible_ssh_user=root

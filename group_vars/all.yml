@@ -1,0 +1,7 @@
+---
+source_root: "{{ inventory_dir }}/../../.."
+apt_cache_valid_time: 86400
+nginx_log_dir: "/var/log/nginx"
+nginx_access_logfile_name: access.log
+nginx_error_logfile_name: error.log
+venv_root: "{{ '~/.environments'|expanduser }}"

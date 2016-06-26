@@ -1,0 +1,23 @@
+---
+- name: ensure log directory exists
+  file: >
+    path=/var/log/{{ pyapp_app_name }}
+    state=directory
+    owner=www-data
+    group=www-data
+
+- name: touch log file with the right permissions
+  file: >
+    path=/var/log/{{ pyapp_app_name }}/app.log
+    state=touch
+    owner=www-data
+    group=www-data
+    mode=0764
+
+- name: fix archive directory permissions
+  file: >
+    state=directory
+    owner=www-data
+    group=www-data
+    recurse=yes
+    path={{ pyapp_dest_archive_dir }}

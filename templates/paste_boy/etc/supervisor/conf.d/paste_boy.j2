@@ -1,0 +1,20 @@
+[program:paste_boy]
+
+command={{ pyapp_dest_dir }}/{{ pyapp_app_name }}/venv/bin/gunicorn paste_boy.wsgi:application --name {{ pyapp_app_name }} --workers 3 --user www-data --bind=unix:/var/run/paste-boy/gunicorn.sock
+stdout_logfile=/var/log/{{ pyapp_app_name }}/{{ pyapp_app_name }}.log
+stderr_logfile=/var/log/{{ pyapp_app_name }}/{{ pyapp_app_name }}-error.log
+
+; This is the directory from which the app is ran.
+directory={{ pyapp_dest_dir }}/{{ pyapp_app_name }}
+
+; Run as
+user=www-data
+
+stopsignal=TERM
+stopwaitsecs=600
+killasgroup=true
+priority=998
+
+; These are up to you
+autostart=true
+autorestart=true

@@ -1,0 +1,55 @@
+---
+- name: Configure paste boy web server
+  hosts: pboy
+  sudo: true
+  vars:
+      nginx_ssl_cert_source: ""
+      nginx_ssl_key_source: ""
+      nginx_ssl_key_name: ""
+      nginx_ssl_cert_file_name: ""
+      nginx_ssl_key_password: ""
+  pre_tasks:
+    - include: tasks/python_dev.yml
+  roles:
+    - role: common
+      tags: configuration
+    - role: ntp
+      tags: configuration
+    - role: fail2ban
+      tags: configuration
+    - role: sysstat
+      tags: configuration
+    - role: nginx
+      tags: configuration
+    - role: supervisor
+      tags: configuration
+    - role: python
+      python_version: '3.4'
+    - role: pyapp
+      pyapp_source_dir: '{{ source_root }}/paste_boy'
+      pyapp_dest_archive_dir: '/var/src'
+      pyapp_dest_dir: '/var/www'
+      pyapp_local_venv: '{{ venv_root | expanduser }}/paste_boy'
+  tasks:
+    - include: tasks/run_dir.yml
+    - include: tasks/django_app_config.yml
+      template_root: paste_boy
+    - include: tasks/pyconfig.yml
+    - include: tasks/nginx.yml
+      ssl: false
+      nginx_app_name: '{{ pyapp_app_name}}'
+      nginx_app_dir: '{{ pyapp_dest_dir }}'
+      nginx_media_root: '{{ pyapp_dest_dir}}/{{ pyapp_app_name }}/static'
+      template_root: paste_boy
+      tags: configuration
+    - include: tasks/paste_boy_super.yml
+      template_root: paste_boy
+#      tags: configuration
+    - name: Restart supervisor
+      supervisorctl:
+        name: paste_boy
+        state: restarted
+    - name: Finalize
+      shell: echo 'paste boy server configuration complete'
+      notify:
+        - restart nginx

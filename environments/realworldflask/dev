@@ -1,0 +1,11 @@
+[rwf]
+nothing_yet
+
+[rwf:vars]
+ansible_ssh_host=nothing_yet
+ansible_ssh_port=22
+ansible_ssh_user=ubuntu
+hostname_override=realworldflask.com
+server_host_id=realworldflask.com
+redis_host=localhost
+redis_port=6379

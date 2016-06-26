@@ -1,0 +1,17 @@
+---
+- name: supervisor - create directories
+  file: >
+    path="{{ item }}"
+    state=directory
+    owner=www-data
+    group=www-data
+  with_items:
+    - /etc/supervisor
+    - /etc/supervisor/conf.d
+  when: ansible_distribution == 'Ubuntu'
+
+- name: supervisor - install paste_boy configuration
+  template: >
+    src={{ template_root }}/etc/supervisor/conf.d/paste_boy.j2
+    dest=/etc/supervisor/conf.d/paste_boy.conf
+  when: ansible_distribution == 'Ubuntu'

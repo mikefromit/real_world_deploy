@@ -1,0 +1,7 @@
+---
+- name: Ensure run directory exists
+  file: >
+    path=/var/run/{{ pyapp_app_name }}
+    state=directory
+    owner=www-data
+    group=www-data

@@ -1,0 +1,8 @@
+---
+- name: install python-dev package
+  apt: >
+    pkg=python-dev
+    state=latest
+    update_cache=yes
+    cache_valid_time={{ apt_cache_valid_time }}
+    force=yes
